@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018/10 | v&#39;s blog</title>
+  <title>v&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="Archlinux配置自启动脚本配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/sy">
+<meta property="og:type" content="article">
 <meta property="og:title" content="v&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/archives/2018/10/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/10/21/Archlinux配置自启动脚本/index.html">
 <meta property="og:site_name" content="v&#39;s blog">
+<meta property="og:description" content="Archlinux配置自启动脚本配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/sy">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-21T14:15:13.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="v&#39;s blog">
+<meta name="twitter:description" content="Archlinux配置自启动脚本配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/sy">
   
     <link rel="alternative" href="/atom.xml" title="v&#39;s blog" type="application/atom+xml">
   
@@ -163,70 +167,128 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Archlinux配置自启动脚本" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h2 id="Archlinux配置自启动脚本"><a href="#Archlinux配置自启动脚本" class="headerlink" title="Archlinux配置自启动脚本"></a>Archlinux配置自启动脚本</h2><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Archlinux 替换initscript 为systemd方式后<br>许多服务启动方式已经发生变化<br>原来的/etc/rc.d/rc.local已经消失<br>并被建议使用tmpfiles.d方式替换<br>但是有些操作tmpfiles.d无法替代<br>所以我们就需要找回我们的rc.local</p>
+<p>我们新建一个rc-local.service<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /usr/lib/systemd/system/rc-local.service</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>写入以下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=/etc/rc.local Compatibility</span><br><span class="line">ConditionPathExists=/etc/rc.local</span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/etc/rc.local</span><br><span class="line">TimeoutSec=0</span><br><span class="line">StandardOutput=tty</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line">SysVStartPriority=99</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p>保存之后使用systemctl开机自启动此service<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> rc-local.service</span><br></pre></td></tr></table></figure></p>
+<p>里面写入#!/bin/bash，这是必须的，然后下面可以写你自己的命令<br>如：su - root -c ‘/usr/soft/zookeeper-3.4.13/bin/zkServer.sh start’<br>开机启动zookeeper<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">su - root -c <span class="string">'/usr/soft/zookeeper-3.4.13/bin/zkServer.sh start'</span></span><br></pre></td></tr></table></figure></p>
+<p>保存 然后将其权限设置为可运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/rc.local</span><br></pre></td></tr></table></figure></p>
+<h2 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h2><p>本文转自: <a href="https://www.yumao.name/read/archlinux-systemd-rc-local/" target="_blank" rel="noopener">地址</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/10/21/Archlinux配置自启动脚本/" class="archive-article-date">
-  	<time datetime="2018-10-21T03:38:18.205Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-21</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/10/21/Archlinux配置自启动脚本/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/10/05/ArchLinux安装与配置/" class="archive-article-date">
-  	<time datetime="2018-10-04T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-05</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/05/ArchLinux安装与配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ArchLinux安装与配置</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/10/05/ArchLinux安装与配置/">ArchLinux安装与配置</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -249,8 +311,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
