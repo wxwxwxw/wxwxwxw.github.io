@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>v&#39;s blog</title>
+  <title>Archlinux配置自启动脚本 | v&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Archlinux配置自启动脚本配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/sy">
+  <meta name="description" content="配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/system/rc-local.ser">
 <meta property="og:type" content="article">
-<meta property="og:title" content="v&#39;s blog">
+<meta property="og:title" content="Archlinux配置自启动脚本">
 <meta property="og:url" content="http://yoursite.com/2018/10/21/Archlinux配置自启动脚本/index.html">
 <meta property="og:site_name" content="v&#39;s blog">
-<meta property="og:description" content="Archlinux配置自启动脚本配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/sy">
+<meta property="og:description" content="配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/system/rc-local.ser">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-21T14:15:13.527Z">
+<meta property="og:updated_time" content="2018-10-21T14:29:15.753Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="v&#39;s blog">
-<meta name="twitter:description" content="Archlinux配置自启动脚本配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/sy">
+<meta name="twitter:title" content="Archlinux配置自启动脚本">
+<meta name="twitter:description" content="配置Archlinux 替换initscript 为systemd方式后许多服务启动方式已经发生变化原来的/etc/rc.d/rc.local已经消失并被建议使用tmpfiles.d方式替换但是有些操作tmpfiles.d无法替代所以我们就需要找回我们的rc.local 我们新建一个rc-local.service1nano /usr/lib/systemd/system/rc-local.ser">
   
     <link rel="alternative" href="/atom.xml" title="v&#39;s blog" type="application/atom+xml">
   
@@ -170,10 +170,24 @@
             <article id="post-Archlinux配置自启动脚本" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Archlinux配置自启动脚本
+    </h1>
+  
+
+        
+        <a href="/2018/10/21/Archlinux配置自启动脚本/" class="archive-article-date">
+  	<time datetime="2018-10-21T03:38:18.205Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-21</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<h2 id="Archlinux配置自启动脚本"><a href="#Archlinux配置自启动脚本" class="headerlink" title="Archlinux配置自启动脚本"></a>Archlinux配置自启动脚本</h2><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Archlinux 替换initscript 为systemd方式后<br>许多服务启动方式已经发生变化<br>原来的/etc/rc.d/rc.local已经消失<br>并被建议使用tmpfiles.d方式替换<br>但是有些操作tmpfiles.d无法替代<br>所以我们就需要找回我们的rc.local</p>
+        <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Archlinux 替换initscript 为systemd方式后<br>许多服务启动方式已经发生变化<br>原来的/etc/rc.d/rc.local已经消失<br>并被建议使用tmpfiles.d方式替换<br>但是有些操作tmpfiles.d无法替代<br>所以我们就需要找回我们的rc.local</p>
 <p>我们新建一个rc-local.service<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /usr/lib/systemd/system/rc-local.service</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <p>写入以下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=/etc/rc.local Compatibility</span><br><span class="line">ConditionPathExists=/etc/rc.local</span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/etc/rc.local</span><br><span class="line">TimeoutSec=0</span><br><span class="line">StandardOutput=tty</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line">SysVStartPriority=99</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>

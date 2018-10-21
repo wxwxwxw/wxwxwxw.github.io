@@ -168,10 +168,24 @@
     <article id="post-Archlinux配置自启动脚本" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/21/Archlinux配置自启动脚本/">Archlinux配置自启动脚本</a>
+    </h1>
+  
+
+        
+        <a href="/2018/10/21/Archlinux配置自启动脚本/" class="archive-article-date">
+  	<time datetime="2018-10-21T03:38:18.205Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-21</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<h2 id="Archlinux配置自启动脚本"><a href="#Archlinux配置自启动脚本" class="headerlink" title="Archlinux配置自启动脚本"></a>Archlinux配置自启动脚本</h2><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Archlinux 替换initscript 为systemd方式后<br>许多服务启动方式已经发生变化<br>原来的/etc/rc.d/rc.local已经消失<br>并被建议使用tmpfiles.d方式替换<br>但是有些操作tmpfiles.d无法替代<br>所以我们就需要找回我们的rc.local</p>
+        <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Archlinux 替换initscript 为systemd方式后<br>许多服务启动方式已经发生变化<br>原来的/etc/rc.d/rc.local已经消失<br>并被建议使用tmpfiles.d方式替换<br>但是有些操作tmpfiles.d无法替代<br>所以我们就需要找回我们的rc.local</p>
 <p>我们新建一个rc-local.service<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /usr/lib/systemd/system/rc-local.service</span><br></pre></td></tr></table></figure></p>
         
           <a class="article-more-a" href="/2018/10/21/Archlinux配置自启动脚本/#more">more >></a>
