@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="keywords" content="hexo, autumn">
+    <title>
+        v&#39;s blog
+    </title>
+    <!-- favicon -->
+    
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- highlight -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/github-gist.min.css">
+    <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad()
+    </script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@1.0.0/dist/hexo-infinite-scroll.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@1.0.0/dist/hexo-infinite-scroll.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@1.0.0/dist/hexo-infinite-scroll.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/frontendsophie/hexo-infinite-scroll@1.0.0/dist/hexo-infinite-scroll.min.js"></script>
+    <script>infiniteScroll();</script>
+    
+    <script>
+        infiniteScroll()
+
+        // for mobile menu
+        $(function () {
+            $('.social-button').click(function () {
+                if ($('.social-links').hasClass('hide-links')) {
+                    $('.social-links').removeClass('hide-links')
+                } else {
+                    $('.social-links').addClass('hide-links')
+                }
+            })
+        })
+    </script>
+</head>
+
+    <body style="background: url(https://cdn.jsdelivr.net/gh/frontendsophie/hexo-theme-autumn@1.0.0/source/img/button-bg.png) #f3f3f3">
+        <div class="container">
+            <header class="header">
+    <h1 class="title">
+        <a href="/" class="logo">
+            v&#39;s blog
+        </a>
+    </h1>
+    <h2 class="desc">
+        
+    </h2>
+
+    <nav class="links">
+        <button class="social-button">
+            menu
+        </button>
+        <ul class="social-links hide-links">
+            
+                <li>
+                    <a href="https://github.com/FrontendSophie">
+                        Github
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.linkedin.com/in/frontendsophie/">
+                        LinkedIn
+                    </a>
+                </li>
+                
+        </ul>
+    </nav>
+</header>
+                <main class="main">
+                    <article class="post">
+    
+            <h2 class="post-title">
+                redis集群搭建记录
+            </h2>
+            <ul class="post-date">
+                <li>
+                    2018-11-23
+                </li>
+                <li>
+                    v
+                </li>
+            </ul>
+            <div class="post-content">
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>准备在3台虚拟机上搭建redis集群，每台虚拟机上有1主1从2个节点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">主</th>
+<th style="text-align:center">从</th>
+<th style="text-align:center">主</th>
+<th style="text-align:center">从</th>
+<th style="text-align:center">主</th>
+<th style="text-align:center">从</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">10.3.3.165</td>
+<td style="text-align:center">10.3.3.165</td>
+<td style="text-align:center">10.3.3.166</td>
+<td style="text-align:center">10.3.3.166</td>
+<td style="text-align:center">10.3.3.167</td>
+<td style="text-align:center">10.3.3.167</td>
+</tr>
+<tr>
+<td style="text-align:center">6379</td>
+<td style="text-align:center">6380</td>
+<td style="text-align:center">6379</td>
+<td style="text-align:center">6380</td>
+<td style="text-align:center">6379</td>
+<td style="text-align:center">6380</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h3><p>下载redis的压缩包<br>redis-4.0.11的下载地址: <a href="http://download.redis.io/releases/redis-4.0.11.tar.gz" target="_blank" rel="noopener">地址</a><br>随便在一个目录下新建一个redis文件夹（我一般在/usr/soft目录下），在这个文件夹里面再新建两个文件夹1和2，分别为主和备</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/soft</span><br><span class="line">mkdir redis</span><br><span class="line"><span class="built_in">cd</span> redis</span><br><span class="line">mkdir 1 2</span><br></pre></td></tr></table></figure>
+<p>这2个文件夹每个文件夹都上传一份压缩包（可使用Xftp），分别解压并安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 1</span><br><span class="line">tar -xf redis-4.0.11.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-4.0.11/src</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="built_in">cd</span> ../../../2</span><br><span class="line">tar -xf redis-4.0.11.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-4.0.11/src</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>新建2个配置文件redis.conf，分别覆盖原来的，即/usr/soft/redis/1/redis-4.0.11和/usr/soft/redis/2/redis-4.0.11下的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 6379                             <span class="comment">#端口      </span></span><br><span class="line"><span class="built_in">bind</span> 本机ip                           <span class="comment">#默认ip为127.0.0.1 需改为本机ip，否则创建集群时无法访问对应的端口，无法创建集群</span></span><br><span class="line">daemonize yes                         <span class="comment">#redis后台运行</span></span><br><span class="line">pidfile /var/run/redis_6379.pid       <span class="comment">#pidfile文件</span></span><br><span class="line">cluster-enabled yes                   <span class="comment">#开启集群</span></span><br><span class="line">cluster-config-file nodes_6379.conf   <span class="comment">#集群的配置  配置文件首次启动自动生成 7000,7001,7002</span></span><br><span class="line">cluster-node-timeout 5000             <span class="comment">#请求超时时间，默认15秒</span></span><br><span class="line">appendonly yes						  <span class="comment">#aof日志开启，它会每次写操作都记录一条日志</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port 6380                             <span class="comment">#端口      </span></span><br><span class="line"><span class="built_in">bind</span> 本机ip                           <span class="comment">#默认ip为127.0.0.1 需改为本机ip，否则创建集群时无法访问对应的端口，无法创建集群</span></span><br><span class="line">daemonize yes                         <span class="comment">#redis后台运行</span></span><br><span class="line">pidfile /var/run/redis_6380.pid       <span class="comment">#pidfile文件</span></span><br><span class="line">cluster-enabled yes                   <span class="comment">#开启集群</span></span><br><span class="line">cluster-config-file nodes_6380.conf   <span class="comment">#集群的配置  配置文件首次启动自动生成 7000,7001,7002</span></span><br><span class="line">cluster-node-timeout 5000             <span class="comment">#请求超时时间，默认15秒</span></span><br><span class="line">appendonly yes						  <span class="comment">#aof日志开启  有需要就开启，它会每次写操作都记录一条日志</span></span><br></pre></td></tr></table></figure>
+<p>然后将这两个节点分别启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/soft/redis/1/redis-4.0.11/src/redis-server /usr/soft/redis/1/redis-4.0.11/redis.conf</span><br><span class="line">/usr/soft/redis/2/redis-4.0.11/src/redis-server /usr/soft/redis/2/redis-4.0.11/redis.conf</span><br></pre></td></tr></table></figure>
+<p>在其他两个服务器上重复以上步骤</p>
+<h3 id="启动集群"><a href="#启动集群" class="headerlink" title="启动集群"></a>启动集群</h3><p>其实redis自带了启动集群的脚本，但是用ruby编写的脚本，所以需要现在主机上安装ruby，最简单的方式是使用yum安装</p>
+<p>安装ruby，安装redis插件（注：ruby版本要高于2.2）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install ruby</span><br><span class="line">gem install redis</span><br></pre></td></tr></table></figure>
+<p>在一台主机上安装即可，安装完后运行脚本，后面跟上所有的redis节点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/soft/redis/1/redis-4.0.11/src/redis-trib.rb create --replicas 1 10.3.3.165:6379 10.3.3.165:6380 10.3.3.166:6379 10.3.3.166:6380 10.3.3.167:6379 10.3.3.167:6380</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>参考地址1: <a href="https://blog.csdn.net/qq_31615049/article/details/82026692?utm_source=blogxgwz7" target="_blank" rel="noopener">地址</a><br>参考地址2: <a href="https://www.cnblogs.com/wuxl360/p/5920330.html" target="_blank" rel="noopener">地址</a><br>参考地址3: <a href="https://blog.csdn.net/qq_31615049/article/details/82026692?utm_source=blogxgwz7" target="_blank" rel="noopener">地址</a></p>
+
+            </div>
+</article>
+
+                </main>
+                <aside class="aside">
+                    <section class="aside-section">
+                        
+    <h1>Categories</h1>
+
+    
+
+                    </section>
+                    <section class="aside-section">
+                        
+    <h1>Archives</h1>
+
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a></li></ul>
+
+
+                    </section>
+                    <section class="aside-section tag">
+                        
+    <h1>Tags</h1>
+
+    
+
+                    </section>
+                </aside>
+        </div>
+    </body>
+
+</html>
